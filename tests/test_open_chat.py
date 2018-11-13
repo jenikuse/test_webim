@@ -14,7 +14,7 @@ class TestOpenChat(unittest.TestCase):
     def test_01_open_webpage(self):
         driver.get(url)
         self.assertIn("веб мессенджер", driver.title.lower())
-        time.sleep(2)  # waiting for chat panel loading
+        time.sleep(3)  # waiting for chat panel loading
 
     def test_02_open_chat(self):
         chat_panel = driver.find_element_by_xpath(
