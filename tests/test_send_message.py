@@ -1,6 +1,7 @@
 import unittest
 from random import choice
 import time
+
 from selenium.webdriver.common.keys import Keys
 from test_open_chat import driver
  
@@ -22,12 +23,14 @@ class TestSendMsg(unittest.TestCase):
             50 * "WЁ are зе чемпiонs? Май френд. ",
             "https://goo.gl/3smbEA",
         }
+
         self.msg_templates_negative = [
             " ",
             15 * "\n",
             1000 * " ",
             "\t\t\n \n\t "
         ]
+
         self.operator_msg = [
             "Добро пожаловать в демо приложение для демонстрации чата.",
             "Пожалуйста, подождите немного, к Вам присоединится оператор...",
@@ -75,8 +78,9 @@ class TestSendMsg(unittest.TestCase):
         for msg in self.msg_templates_negative:
             self.assertNotIn(msg, chat_history,
                              "not valid message: \'" + msg + "\' has been found in chat history")
-
-    def test_03_send_emoji(self):
+    
+    # TODO: add validation that emoji was sent
+    def test_06_send_emoji(self):
         text_area = self.text_area
         btn_emoji = driver.find_element_by_css_selector("button.webim-action:nth-child(3)")
         btn_emoji.click()
