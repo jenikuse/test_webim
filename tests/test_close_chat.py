@@ -1,24 +1,22 @@
 import unittest
 
-from selenium import webdriver
+from test_open_chat import driver
 
 
-driver = webdriver.Firefox()
+class TestCloseChat(unittest.TestCase):
 
-
-class TestOpenChat(unittest.TestCase):
-
-    def test_01_close_chat(self):
+    def test_15_close_chat(self):
         btn_close = driver.find_element_by_css_selector("div.webim-action-close")
+        self.assertTrue(btn_close.is_displayed(),
+                        "chat close button is not displaying")
         btn_close.click()
 
-    def test_02_check_if_chat_closed(self):
-        msg_area = driver.find_element_by_css_selector(".webim-message-area")
-        self.assertFalse(msg_area.is_displayed())
-
-    def test_10(self):
+    def test_16_check_if_chat_closed(self):
+        msg_area = driver.find_element_by_css_selector(".webim-dialogues")
+        self.assertFalse(msg_area.is_displayed(),
+                         "chat was not closed")
         driver.close()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
