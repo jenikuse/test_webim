@@ -2,22 +2,25 @@ import unittest
 from random import choice
 import time
 from selenium.webdriver.common.keys import Keys
-from selenium.common import exceptions as ex
 from test_open_chat import driver
  
 
 class TestSendMsg(unittest.TestCase):
 
     def setUp(self):
+        self.text_area = driver.find_element_by_css_selector(".webim-message-area")
+        self.assertTrue(self.text_area.is_displayed(),
+                        "field for message input is not displaying")
+
         self.msg_templates_positive = {
-            "i love chatting alone;",
+            "i love chatting myself;",
             "Eat @ sleep @ testing",
             ",.%#+=!@^*()",
             "∆",
             "&",  # BUG: ampersand (&) --> '&amp;'
             20 * "many-" + "elephants-live-in-my-head, doctor!",
             50 * "WЁ are зе чемпiонs? Май френд. ",
-            "https://vk.cc/8H6pBG",
+            "https://goo.gl/3smbEA",
         }
         self.msg_templates_negative = [
             " ",
@@ -32,9 +35,7 @@ class TestSendMsg(unittest.TestCase):
         ]
 
     def test_04_send_messages_positive(self):
-        text_area = driver.find_element_by_css_selector(".webim-message-area")
-        self.assertTrue(text_area.is_displayed(),
-                        "field for message input is not displaying")
+        text_area = self.text_area
 
         for msg_to_send in self.msg_templates_positive:
             text_area.send_keys(msg_to_send)
@@ -56,11 +57,10 @@ class TestSendMsg(unittest.TestCase):
                 if msg_to_send == "&" and msg_to_send != displayed_msg:
                     print("symbol \'" + msg_to_send + 
                     "\' transforms to the next combination: \'" + displayed_msg + "\'")
+            text_area.clear()
 
     def test_05_send_messages_negative(self):
-        text_area = driver.find_element_by_css_selector(".webim-message-area")
-        self.assertTrue(text_area.is_displayed(),
-                        "field for message input is not displaying")
+        text_area = self.text_area
 
         for msg_to_send in self.msg_templates_negative:
             text_area.send_keys(msg_to_send)
@@ -77,9 +77,7 @@ class TestSendMsg(unittest.TestCase):
                              "not valid message: \'" + msg + "\' has been found in chat history")
 
     def test_03_send_emoji(self):
-        text_area = driver.find_element_by_css_selector(".webim-message-area")
-        self.assertTrue(text_area.is_displayed(),
-                        "field for message input is not displaying")
+        text_area = self.text_area
         btn_emoji = driver.find_element_by_css_selector("button.webim-action:nth-child(3)")
         btn_emoji.click()
         time.sleep(2)  # for loading emoji panel
