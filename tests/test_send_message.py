@@ -79,23 +79,21 @@ class TestSendMsg(unittest.TestCase):
             self.assertNotIn(msg, chat_history,
                              "not valid message: \'" + msg + "\' has been found in chat history")
     
-    # TODO: add validation that emoji was sent
+    # TODO: add validation for sent emoji
     def test_06_send_emoji(self):
         text_area = self.text_area
         btn_emoji = driver.find_element_by_css_selector("button.webim-action:nth-child(3)")
         btn_emoji.click()
         time.sleep(2)  # for loading emoji panel
-        emoji_list = driver.find_elements_by_css_selector("span.webim-emoji:nth-child(57)")
+        emoji_list = driver.find_elements_by_class_name("webim-emoji")
 
         for _ in range(5):
-            emoji = choice(emoji_list).text
-            text_area.send_keys(emoji)
+            emoji = choice(emoji_list)
+            emoji.click()
+            text_area.send_keys(Keys.ENTER)
             self.assertEqual("", text_area.text, "after sending emoji text field is not empty") 
             text_area.clear()
-
-        displayed_messages = driver.find_elements_by_class_name(
-                "webim-message-body")
-
+    
 
 if __name__ == "__main__":
     unittest.main()
